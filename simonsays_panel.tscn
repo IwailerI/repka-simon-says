@@ -1,0 +1,67 @@
+[gd_scene load_steps=2 format=3 uid="uid://cp5crjpua71cg"]
+
+[ext_resource type="Script" uid="uid://b1ci1yogcx873" path="res://simonsays_panel.gd" id="1_usubr"]
+
+[node name="SimonSaysPanel" type="GridContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -21.5
+offset_top = -33.0
+offset_right = 21.5
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 2
+script = ExtResource("1_usubr")
+
+[node name="B" type="Button" parent="."]
+modulate = Color(0.2650306, 0.4866767, 1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "B"
+
+[node name="G" type="Button" parent="."]
+modulate = Color(0, 0.68422496, 0.1679753, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "G"
+
+[node name="Y" type="Button" parent="."]
+modulate = Color(0.50321895, 0.46412963, 0.22712561, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Y"
+
+[node name="R" type="Button" parent="."]
+modulate = Color(0.8868572, 0.29804158, 0.34333172, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "R"
+
+[node name="You" type="Node2D" parent="."]
+visible = false
+
+[node name="Label" type="Label" parent="You"]
+offset_left = 50.0
+offset_top = 166.0
+offset_right = 110.0
+offset_bottom = 189.0
+text = "^ YOU ^"
+
+[node name="Ok" type="Node2D" parent="."]
+visible = false
+
+[node name="Label" type="Label" parent="Ok"]
+modulate = Color(0, 0.8512435, 0.32381624, 1)
+offset_left = 61.0
+offset_top = -31.0
+offset_right = 121.0
+offset_bottom = -8.0
+text = "OK!"
