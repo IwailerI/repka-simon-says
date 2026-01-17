@@ -8,11 +8,13 @@ extends Node
 @onready var address: LineEdit = $Address
 @onready var join_button: Button = $JoinButton
 @onready var host_button: Button = $HostButton
+@onready var reflex_mode: CheckBox = $ReflexMode
+
 
 func _ready() -> void:
 	button.hide()
 
-	join_button.pressed.connect(func() -> void:
+	host_button.pressed.connect(func() -> void:
 		get_tree().call_group("temporary", "hide")
 
 		var peer := ENetMultiplayerPeer.new()
@@ -20,19 +22,20 @@ func _ready() -> void:
 		multiplayer.multiplayer_peer = peer
 
 		button.show()
+		label.text += "peer %d (hosting)\n" % multiplayer.get_unique_id()
+
 	)
-	host_button.pressed.connect(func() -> void:
+	join_button.pressed.connect(func() -> void:
 		get_tree().call_group("temporary", "hide")
 
 		var peer := ENetMultiplayerPeer.new()
 		peer.create_client(address.text, int(port.value))
 		multiplayer.multiplayer_peer = peer
+
+		label.text += "peer %d (joining)\n" % multiplayer.get_unique_id()
 	)
 
-	
 	multiplayer.peer_connected.connect(_on_peer_connected)
-
-	label.text += "peer %d\n" % multiplayer.get_unique_id()
 
 	button.pressed.connect(_on_start)
 	multiplayer.server_disconnected.connect(func() -> void:
@@ -54,4 +57,11 @@ func _on_start() -> void:
 
 @rpc("authority", "call_local", "reliable")
 func _change_scene() -> void:
-	get_tree().change_scene_to_packed(preload("res://simonsays.tscn"))
+	var tree := get_tree()
+	var inst := preload("res://simonsays.tscn").instantiate()
+
+	tree.root.add_child(inst)
+	tree.current_scene = inst
+	queue_free()
+
+	inst.reflex_mode = reflex_mode.button_pressed

@@ -82,3 +82,11 @@ offset_top = 262.0
 offset_right = 120.0
 offset_bottom = 285.0
 text = "Address (join only)"
+
+[node name="ReflexMode" type="CheckBox" parent="." groups=["temporary"]]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 418.0
+offset_right = 258.0
+offset_bottom = 449.0
+text = "Reflex mode (host only)"

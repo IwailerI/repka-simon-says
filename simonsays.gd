@@ -16,6 +16,7 @@ const COL_STRING: Dictionary[Col, String] = {
 @onready var p4: SimonSaysPanel = $P4
 
 var our_p: SimonSaysPanel
+var reflex_mode: bool = false
 
 @onready var remaining_time: ProgressBar = $RemainingTime
 @onready var text: RichTextLabel = $Text
@@ -137,10 +138,17 @@ func play_round() -> void:
 	for v: Col in seq:
 		prompt += COL_STRING[v]
 
-	_start_sequence.rpc(seq)
-	_start_timer.rpc(5.0)
-	_set_text.rpc("Simon says:\n" + prompt)
+	if reflex_mode:
+		_start_sequence.rpc(seq)
+		_set_text.rpc("Simon says:\n" + prompt)
+	else:
+		_set_text.rpc("Simon says:\n%s\nGet ready..." % prompt)
+		_start_timer.rpc(5.0)
+		await get_tree().create_timer(5.0).timeout
+		_start_sequence.rpc(seq)
+		_set_text.rpc("Repeat!")
 
+	_start_timer.rpc(5.0)
 	await get_tree().create_timer(5.0).timeout
 
 	var peers := multiplayer.get_peers()
