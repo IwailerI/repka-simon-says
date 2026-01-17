@@ -1,23 +1,35 @@
 extends Node
 
 
-const SERVER_PORT: int = 55555
-
 @onready var label: Label = $Label
 @onready var should_host := "--host" in OS.get_cmdline_user_args()
 @onready var button: Button = $Button
-
+@onready var port: SpinBox = $Port
+@onready var address: LineEdit = $Address
+@onready var join_button: Button = $JoinButton
+@onready var host_button: Button = $HostButton
 
 func _ready() -> void:
-	var peer := ENetMultiplayerPeer.new()
-	if should_host:
-		peer.create_server(SERVER_PORT)
-		button.show()
-	else:
-		peer.create_client("127.0.0.1", SERVER_PORT)
-		button.queue_free()
+	button.hide()
 
-	multiplayer.multiplayer_peer = peer
+	join_button.pressed.connect(func() -> void:
+		get_tree().call_group("temporary", "hide")
+
+		var peer := ENetMultiplayerPeer.new()
+		peer.create_server(int(port.value))
+		multiplayer.multiplayer_peer = peer
+
+		button.show()
+	)
+	host_button.pressed.connect(func() -> void:
+		get_tree().call_group("temporary", "hide")
+
+		var peer := ENetMultiplayerPeer.new()
+		peer.create_client(address.text, int(port.value))
+		multiplayer.multiplayer_peer = peer
+	)
+
+	
 	multiplayer.peer_connected.connect(_on_peer_connected)
 
 	label.text += "peer %d\n" % multiplayer.get_unique_id()
@@ -26,6 +38,9 @@ func _ready() -> void:
 	multiplayer.server_disconnected.connect(func() -> void:
 		printerr("client disconnected")
 		get_tree().quit(1)
+	)
+	multiplayer.connection_failed.connect(func() -> void:
+		label.text += "connection failed\n"
 	)
 
 
