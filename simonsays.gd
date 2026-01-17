@@ -95,7 +95,12 @@ func _declare_winner(peer: int) -> void:
 			await t.finished
 	).call_deferred()
 
-	
+
+@rpc("authority", "call_local", "reliable")
+func _reload_scene() -> void:
+	get_tree().reload_current_scene()
+
+
 func server_loop() -> void:
 	await get_tree().create_timer(3.0).timeout
 
@@ -107,6 +112,10 @@ func server_loop() -> void:
 	else:
 		_set_text.rpc("Player %d wins!" % _players_in_game[0])
 		_declare_winner.rpc(_players_in_game[0])
+	
+	await get_tree().create_timer(3.0).timeout
+
+	_reload_scene.rpc()
 
 
 func play_round() -> void:
