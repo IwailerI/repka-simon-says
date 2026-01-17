@@ -28,6 +28,11 @@ func _ready() -> void:
 	_b.pressed.connect(_button.bind(Col.B))
 	_y.pressed.connect(_button.bind(Col.Y))
 
+	_r.pressed.connect(_r.activate.rpc)
+	_g.pressed.connect(_g.activate.rpc)
+	_b.pressed.connect(_b.activate.rpc)
+	_y.pressed.connect(_y.activate.rpc)
+
 	_r.disabled = true
 	_g.disabled = true
 	_b.disabled = true

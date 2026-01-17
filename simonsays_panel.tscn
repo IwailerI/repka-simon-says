@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cp5crjpua71cg"]
+[gd_scene load_steps=3 format=3 uid="uid://cp5crjpua71cg"]
 
 [ext_resource type="Script" uid="uid://b1ci1yogcx873" path="res://simonsays_panel.gd" id="1_usubr"]
+[ext_resource type="Script" uid="uid://d2qa2p02txgmo" path="res://actuator.gd" id="2_2eneo"]
 
 [node name="SimonSaysPanel" type="GridContainer"]
 anchors_preset = 8
@@ -23,6 +24,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "B"
+script = ExtResource("2_2eneo")
 
 [node name="G" type="Button" parent="."]
 modulate = Color(0, 0.68422496, 0.1679753, 1)
@@ -30,6 +32,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "G"
+script = ExtResource("2_2eneo")
 
 [node name="Y" type="Button" parent="."]
 modulate = Color(0.50321895, 0.46412963, 0.22712561, 1)
@@ -37,6 +40,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Y"
+script = ExtResource("2_2eneo")
 
 [node name="R" type="Button" parent="."]
 modulate = Color(0.8868572, 0.29804158, 0.34333172, 1)
@@ -44,6 +48,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "R"
+script = ExtResource("2_2eneo")
 
 [node name="You" type="Node2D" parent="."]
 visible = false
