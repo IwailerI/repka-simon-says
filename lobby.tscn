@@ -67,6 +67,14 @@ offset_right = 143.0
 offset_bottom = 366.0
 text = "JOIN!"
 
+[node name="Singleplayer" type="Button" parent="." groups=["temporary"]]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 518.0
+offset_right = 131.0
+offset_bottom = 549.0
+text = "Singleplayer"
+
 [node name="Label2" type="Label" parent="." groups=["temporary"]]
 layout_mode = 0
 offset_left = 60.0
@@ -99,3 +107,12 @@ offset_right = 278.0
 offset_bottom = 485.0
 button_pressed = true
 text = "Show other players my input"
+
+[node name="SingleplayerTimer" type="CheckBox" parent="." groups=["temporary"]]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 556.0
+offset_right = 274.0
+offset_bottom = 587.0
+button_pressed = true
+text = "Singleplayer timer"

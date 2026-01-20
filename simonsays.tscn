@@ -63,3 +63,11 @@ scroll_active = false
 autowrap_mode = 1
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Continue" type="Button" parent="."]
+visible = false
+offset_left = 523.0
+offset_top = 579.0
+offset_right = 614.0
+offset_bottom = 610.0
+text = "CONTINUE"

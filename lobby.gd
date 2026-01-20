@@ -10,6 +10,8 @@ extends Node
 @onready var host_button: Button = $HostButton
 @onready var reflex_mode: CheckBox = $ReflexMode
 @onready var colored_feedback: CheckBox = $ColoredFeedback
+@onready var singleplayer_timer: CheckBox = $SingleplayerTimer
+@onready var singleplayer: Button = $Singleplayer
 
 
 func _ready() -> void:
@@ -45,6 +47,20 @@ func _ready() -> void:
 	)
 	multiplayer.connection_failed.connect(func() -> void:
 		label.text += "connection failed\n"
+	)
+
+	singleplayer.pressed.connect(func() -> void:
+		var tree := get_tree()
+		var inst := preload("res://simonsays.tscn").instantiate()
+
+		inst.reflex_mode = reflex_mode.button_pressed
+		inst.colored_feedback = colored_feedback.button_pressed
+		inst.singleplayer = true
+		inst.singleplayer_timer = singleplayer_timer.button_pressed
+
+		tree.root.add_child(inst)
+		tree.current_scene = inst
+		queue_free()
 	)
 
 

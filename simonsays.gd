@@ -18,10 +18,13 @@ const COL_STRING: Dictionary[Col, String] = {
 var our_p: SimonSaysPanel
 var reflex_mode: bool = false
 var colored_feedback: bool = false
+var singleplayer: bool = false
+var singleplayer_timer: bool = false
 
 @onready var remaining_time: ProgressBar = $RemainingTime
 @onready var text: RichTextLabel = $Text
 @onready var screen_rect: ColorRect = $ScreenRect
+@onready var continue_button: Button = $Continue
 
 var _round_num: int = 0
 var _survivors: PackedInt32Array
@@ -53,6 +56,9 @@ func _ready() -> void:
 
 	if not colored_feedback:
 		our_p.disable_input_sharing()
+
+	if singleplayer and not singleplayer_timer:
+		continue_button.show()
 	
 
 @rpc("any_peer", "call_local", "reliable")
@@ -113,18 +119,20 @@ func _reset_state() -> void:
 
 
 func server_loop() -> void:
-	await get_tree().create_timer(3.0).timeout
+	await _wait_timer(3.0)
 
-	while _players_in_game.size() > 1:
+	while _players_in_game.size() > 1 or (singleplayer and _players_in_game.size() > 0):
 		await play_round()
 	
-	if _players_in_game.size() == 0:
+	if singleplayer:
+		_set_text("You lost on round %d!" % _round_num)
+	elif _players_in_game.size() == 0:
 		_set_text.rpc("Draw!")
 	else:
 		_set_text.rpc("Player %d wins!" % _players_in_game[0])
 		_declare_winner.rpc(_players_in_game[0])
 	
-	await get_tree().create_timer(3.0).timeout
+	await _wait_timer(3.0)
 
 	_reload_scene.rpc()
 
@@ -140,10 +148,9 @@ func play_round() -> void:
 		seq.push_back(Col.values().pick_random())
 
 	_set_text.rpc("Round %d is about to start..." % _round_num)
-	_start_timer.rpc(3.0)
 	_reset_state.rpc()
-
-	await get_tree().create_timer(3.0).timeout
+	
+	await _wait_timer(3.0)
 
 	var prompt := ""
 	for v: Col in seq:
@@ -154,13 +161,14 @@ func play_round() -> void:
 		_set_text.rpc("Simon says:\n" + prompt)
 	else:
 		_set_text.rpc("Simon says:\n%s\nGet ready..." % prompt)
-		_start_timer.rpc(5.0)
-		await get_tree().create_timer(5.0).timeout
+		
+		await _wait_timer(5.0)
+
 		_start_sequence.rpc(seq)
 		_set_text.rpc("Repeat!")
 
-	_start_timer.rpc(5.0)
-	await get_tree().create_timer(5.0).timeout
+
+	await _wait_timer(5.0)
 
 	var peers := multiplayer.get_peers()
 	peers.append(multiplayer.get_unique_id())
@@ -169,6 +177,13 @@ func play_round() -> void:
 			_player_dead.rpc(peer)
 			_players_in_game.erase(peer)
 
+
+func _wait_timer(d: float) -> void:
+	if singleplayer and not singleplayer_timer:
+		await continue_button.pressed
+	else:
+		_start_timer.rpc(d)
+		await get_tree().create_timer(d).timeout
 
 func _get_panel_of_peer(peer: int) -> SimonSaysPanel:
 	var peers := multiplayer.get_peers()
