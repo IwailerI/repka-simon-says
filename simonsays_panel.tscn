@@ -54,10 +54,10 @@ script = ExtResource("2_2eneo")
 visible = false
 
 [node name="Label" type="Label" parent="You"]
-offset_left = 50.0
-offset_top = 166.0
-offset_right = 110.0
-offset_bottom = 189.0
+offset_left = 48.5
+offset_top = 152.0
+offset_right = 108.5
+offset_bottom = 175.0
 text = "^ YOU ^"
 
 [node name="Ok" type="Node2D" parent="."]
@@ -70,3 +70,13 @@ offset_top = -31.0
 offset_right = 121.0
 offset_bottom = -8.0
 text = "OK!"
+
+[node name="Counter" type="Node2D" parent="."]
+
+[node name="Label" type="Label" parent="Counter"]
+offset_left = -15.5
+offset_top = 173.0
+offset_right = 172.5
+offset_bottom = 221.0
+horizontal_alignment = 1
+autowrap_mode = 1

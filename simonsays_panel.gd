@@ -21,6 +21,8 @@ var _idx: int = 0
 @onready var _r: Button = $R
 @onready var _g: Button = $G
 @onready var _y: Button = $Y
+@onready var _counter_label: Label = $Counter/Label
+
 
 func _ready() -> void:
 	_r.pressed.connect(_button.bind(Col.R))
@@ -39,6 +41,11 @@ func _ready() -> void:
 	_y.disabled = true
 
 
+@rpc("any_peer", "call_local", "reliable")
+func set_label_text(t: String) -> void:
+	_counter_label.text = t
+
+
 func disable_input_sharing() -> void:
 	_r.pressed.disconnect(_r.activate.rpc)
 	_g.pressed.disconnect(_g.activate.rpc)
@@ -49,12 +56,14 @@ func disable_input_sharing() -> void:
 func play_sequence(seq: Array[Col]) -> void:
 	reset()
 	_seq = seq.duplicate()
+	set_label_text.rpc("0 / %d" % seq.size())
 
 
 func reset() -> void:
 	_seq = []
 	_idx = 0
 	_ok.hide()
+	set_label_text.rpc("")
 
 
 func make_local() -> void:
@@ -76,9 +85,11 @@ func _button(col: Col) -> void:
 	if _seq[_idx] != col:
 		sequence_error.emit()
 		_idx = 0
+		set_label_text.rpc("0 / %d" % _seq.size())
 		return
 
 	_idx += 1
+	set_label_text.rpc("%d / %d" % [_idx, _seq.size()])
 
 	if _idx >= _seq.size():
 		sequence_completed.emit()
