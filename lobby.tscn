@@ -90,3 +90,12 @@ offset_top = 418.0
 offset_right = 258.0
 offset_bottom = 449.0
 text = "Reflex mode (host only)"
+
+[node name="ColoredFeedback" type="CheckBox" parent="." groups=["temporary"]]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 454.0
+offset_right = 278.0
+offset_bottom = 485.0
+button_pressed = true
+text = "Show other players my input"

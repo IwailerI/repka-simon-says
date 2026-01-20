@@ -9,6 +9,7 @@ extends Node
 @onready var join_button: Button = $JoinButton
 @onready var host_button: Button = $HostButton
 @onready var reflex_mode: CheckBox = $ReflexMode
+@onready var colored_feedback: CheckBox = $ColoredFeedback
 
 
 func _ready() -> void:
@@ -60,8 +61,9 @@ func _change_scene() -> void:
 	var tree := get_tree()
 	var inst := preload("res://simonsays.tscn").instantiate()
 
+	inst.reflex_mode = reflex_mode.button_pressed
+	inst.colored_feedback = colored_feedback.button_pressed
+
 	tree.root.add_child(inst)
 	tree.current_scene = inst
 	queue_free()
-
-	inst.reflex_mode = reflex_mode.button_pressed

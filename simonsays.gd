@@ -17,6 +17,7 @@ const COL_STRING: Dictionary[Col, String] = {
 
 var our_p: SimonSaysPanel
 var reflex_mode: bool = false
+var colored_feedback: bool = false
 
 @onready var remaining_time: ProgressBar = $RemainingTime
 @onready var text: RichTextLabel = $Text
@@ -49,6 +50,9 @@ func _ready() -> void:
 				.set_trans(Tween.TRANS_EXPO)
 				.set_ease(Tween.EASE_OUT))
 	)
+
+	if not colored_feedback:
+		our_p.disable_input_sharing()
 	
 
 @rpc("any_peer", "call_local", "reliable")

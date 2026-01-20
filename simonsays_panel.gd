@@ -39,6 +39,13 @@ func _ready() -> void:
 	_y.disabled = true
 
 
+func disable_input_sharing() -> void:
+	_r.pressed.disconnect(_r.activate.rpc)
+	_g.pressed.disconnect(_g.activate.rpc)
+	_b.pressed.disconnect(_b.activate.rpc)
+	_y.pressed.disconnect(_y.activate.rpc)
+
+
 func play_sequence(seq: Array[Col]) -> void:
 	reset()
 	_seq = seq.duplicate()
