@@ -106,6 +106,12 @@ func _reload_scene() -> void:
 	get_tree().reload_current_scene()
 
 
+@rpc("authority", "call_local", "reliable")
+func _reset_state() -> void:
+	for p: SimonSaysPanel in [p1, p2, p3, p4]:
+		p.reset()
+
+
 func server_loop() -> void:
 	await get_tree().create_timer(3.0).timeout
 
@@ -135,6 +141,7 @@ func play_round() -> void:
 
 	_set_text.rpc("Round %d is about to start..." % _round_num)
 	_start_timer.rpc(3.0)
+	_reset_state.rpc()
 
 	await get_tree().create_timer(3.0).timeout
 
